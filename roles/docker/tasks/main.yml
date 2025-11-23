@@ -14,16 +14,25 @@
     state: directory
     mode: '0755'
 
-- name: Add Docker GPG key
+# 1. Download to a temp file first
+- name: Download Docker GPG key (ASCII)
   ansible.builtin.get_url:
     url: "https://download.docker.com/linux/debian/gpg"
-    dest: /etc/apt/keyrings/docker.gpg
+    dest: /tmp/docker.gpg.armored
     mode: '0644'
     force: yes
 
+- name: Dearmor and install Docker GPG key
+  ansible.builtin.shell:
+    cmd: gpg --dearmor --yes -o /etc/apt/keyrings/docker.gpg /tmp/docker.gpg.armored
+  # 'creates' prevents it running if the file exists, but since we are fixing a bug,
+  # you might want to leave 'creates' out for one run, or ensure the file is deleted first.
+  args:
+    creates: /etc/apt/keyrings/docker.gpg
+
 - name: Add Docker repository
   ansible.builtin.apt_repository:
-    repo: "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian {{ ansible_facts.lsb.codename }} stable"
+    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian {{ ansible_facts.lsb.codename }} stable"
     state: present
     filename: docker
 

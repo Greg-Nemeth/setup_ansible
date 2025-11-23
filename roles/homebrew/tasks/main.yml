@@ -19,3 +19,10 @@
       environment:
         NONINTERACTIVE: "true"
       become: no
+
+    - name: Add Homebrew to shell configuration (.bashrc)
+      ansible.builtin.lineinfile:
+        path: "{{ ansible_env.HOME }}/.bashrc"
+        line: 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"'
+        state: present
+        create: yes
