@@ -1,0 +1,13 @@
+---
+- name: Check if sdkman is installed
+  stat:
+    path: "~/.sdkman"
+  register: sdkman_stat
+  become: no
+
+- name: Install sdkman
+  ansible.builtin.shell: "curl -s 'https://get.sdkman.io' | bash"
+  args:
+    creates: "~/.sdkman"
+  when: not sdkman_stat.stat.exists
+  become: no

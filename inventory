@@ -1,0 +1,5 @@
+[dev]
+dev-machine ansible_host=127.0.0.1
+
+[dev:vars]
+ansible_connection=local

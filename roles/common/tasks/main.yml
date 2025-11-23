@@ -1,0 +1,11 @@
+---
+- name: Set user password
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    password: "{{ user_password }}"
+    update_password: on_create
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: yes
+  changed_when: false

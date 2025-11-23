@@ -1,0 +1,22 @@
+---
+- name: Setup Dev Machine
+  hosts: dev
+  become: yes
+
+  vars_prompt:
+    - name: "target_user"
+      prompt: "Enter the username on the target machine"
+      private: no
+      default: "greg"
+    - name: "user_password"
+      prompt: "Enter the password for the user (to be SET)"
+      private: yes
+
+  remote_user: "{{ target_user }}"
+
+  roles:
+    - common
+    - homebrew
+    - sdkman
+    - docker
+    - nala

@@ -1,0 +1,5 @@
+---
+- name: Install nala
+  ansible.builtin.apt:
+    name: nala
+    state: present
