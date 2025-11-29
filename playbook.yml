@@ -3,14 +3,15 @@
   hosts: dev
   become: yes
 
-  vars_prompt:
-    - name: "target_user"
-      prompt: "Enter the username on the target machine"
-      private: no
-      default: "greg"
-    - name: "user_password"
-      prompt: "Enter the password for the user (to be SET)"
-      private: yes
+  vars:
+    target_user: "greg"
+    user_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          66663538353864623139613666363364653839366131373365653134623131333861353034623364
+          3264616430306534323166613330646362656364356663350a616637396534326534383633303337
+          36303166326566393135613733643364376231613533346232303562326339316433653935313731
+          6265303032336431610a376461663364636364303731613462643939316139623333326465356535
+          3533
 
   remote_user: "{{ target_user }}"
 
